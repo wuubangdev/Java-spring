@@ -24,7 +24,7 @@ public class UserController {
 
     @RequestMapping("/")
     public String getHomePage(Model model) {
-        User arrUsers = this.userService.getAllUserByEmail("1@gmail.com");
+        List<User> arrUsers = this.userService.getAllUserByEmail("1@gmail.com");
         System.out.println(arrUsers);
         model.addAttribute("eric", "test");
         model.addAttribute("hoidanit", "from control with model");
