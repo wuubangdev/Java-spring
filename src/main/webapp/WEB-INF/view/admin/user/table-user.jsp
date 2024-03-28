@@ -42,8 +42,10 @@
                                         <td>
                                             <a type="submit" href="/admin/user/${user.id}"
                                                 class="btn btn-primary">View</a>
-                                            <a type="submit" class="btn btn-warning">Update</a>
-                                            <a type="submit" class="btn btn-danger">Delete</a>
+                                            <a type="submit" href="/admin/user/update/${user.id}"
+                                                class="btn btn-warning">Update</a>
+                                            <a type="submit" href="/admin/user/delete/${user.id}"
+                                                class="btn btn-danger">Delete</a>
                                         </td>
                                     </tr>
                                 </c:forEach>

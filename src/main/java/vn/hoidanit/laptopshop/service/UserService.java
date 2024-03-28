@@ -20,6 +20,10 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
+    public User getUserById(long id) {
+        return this.userRepository.findFirstUserById(id);
+    }
+
     public List<User> getAllUserByEmail(String email) {
         return this.userRepository.findOneByEmail(email);
     }
@@ -27,5 +31,9 @@ public class UserService {
     public User handleSaveUser(User user) {
         User eric = this.userRepository.save(user);
         return eric;
+    }
+
+    public void deleteAUser(long id) {
+        this.userRepository.deleteById(id);
     }
 }

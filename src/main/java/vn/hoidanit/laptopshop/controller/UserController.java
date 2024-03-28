@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.repository.UserRepository;
 import vn.hoidanit.laptopshop.service.UserService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
@@ -32,30 +36,63 @@ public class UserController {
         return "hello";
     }
 
+    @RequestMapping(value = "/admin/user/create") // GET
+    public String getCreateUserPage(Model model, @ModelAttribute("newUser") User newUser) {
+        model.addAttribute("newUser", new User());
+        return "admin/user/create";
+    }
+
+    @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
+    public String createUserPage(Model model, @ModelAttribute("newUser") User newUser) {
+        this.userService.handleSaveUser(newUser);
+        return "redirect:/admin/user";
+    }
+
     @RequestMapping("/admin/user") // GET
     public String getUserPage(Model model) {
         List<User> users = this.userService.getAllUser();
-        System.out.println(users);
         model.addAttribute("users", users);
         return "admin/user/table-user";
     }
 
     @RequestMapping("/admin/user/{id}") // GET
     public String getUserDetailPage(Model model, @PathVariable long id) {
-        System.out.println(id);
-        model.addAttribute("id", id);
+        User user = this.userService.getUserById(id);
+        model.addAttribute("user", user);
         return "admin/user/show";
     }
 
-    @RequestMapping(value = "/admin/user/create") // GET
-    public String getCreateUserPage(Model model, @ModelAttribute("newUser") User hoidanit) {
-        model.addAttribute("newUser", new User());
-        return "admin/user/create";
+    @RequestMapping("/admin/user/update/{id}") // GET
+    public String getUpdateUserPage(Model model, @PathVariable long id) {
+        User currentUser = this.userService.getUserById(id);
+        model.addAttribute("updateUser", currentUser);
+        return "admin/user/update";
     }
 
-    @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
-    public String createUserPage(Model model, @ModelAttribute("newUser") User hoidanit) {
-        this.userService.handleSaveUser(hoidanit);
+    @PostMapping("/admin/user/update")
+    public String postUpdateUser(Model model, @ModelAttribute("updateUser") User updateUser) {
+        User currentUser = this.userService.getUserById(updateUser.getId());
+        if (currentUser != null) {
+            currentUser.setAddress(updateUser.getAddress());
+            currentUser.setFullName(updateUser.getFullName());
+            currentUser.setPhone(updateUser.getPhone());
+            this.userService.handleSaveUser(currentUser);
+        }
+        return "redirect:/admin/user/" + updateUser.getId();
+    }
+
+    @GetMapping("/admin/user/delete/{id}")
+    public String getDeleteUserPage(Model model, @PathVariable long id) {
+        // User deleteUser = new User()
+        // deleteUser.setId(id);
+        model.addAttribute("id", id);
+        model.addAttribute("deleteUser", new User());
+        return "admin/user/delete";
+    }
+
+    @PostMapping("/admin/user/delete")
+    public String postDeleteUser(Model model, @ModelAttribute("deleteUser") User deleteUser) {
+        this.userService.deleteAUser(deleteUser.getId());
         return "redirect:/admin/user";
     }
 
