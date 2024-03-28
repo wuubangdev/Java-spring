@@ -4,6 +4,9 @@
         <html lang="en">
 
         <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Table user</title>
             <!-- Latest compiled and minified CSS -->
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
             <!-- Latest compiled JavaScript -->
@@ -20,6 +23,7 @@
                             <h3>Table user</h3>
                             <a href="/admin/user/create" class="btn btn-primary">Create a user</a>
                         </div>
+                        <hr />
                         <table class="table table-bordered table-hover mt-2">
                             <thead>
                                 <tr>
@@ -36,7 +40,8 @@
                                         <td>${user.email}</td>
                                         <td>${user.fullName}</td>
                                         <td>
-                                            <a type="submit" class="btn btn-primary">View</a>
+                                            <a type="submit" href="/admin/user/${user.id}"
+                                                class="btn btn-primary">View</a>
                                             <a type="submit" class="btn btn-warning">Update</a>
                                             <a type="submit" class="btn btn-danger">Delete</a>
                                         </td>
