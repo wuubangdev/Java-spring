@@ -36,14 +36,22 @@
                                             </div>
                                             <hr />
                                             <div class="card" style="width: 60%;">
-                                                <div class="card-header">
-                                                    User infomation
+                                                <div class="card-header d-flex justify-content-center ">
+                                                    <b>User infomation</b>
+                                                </div>
+                                                <div class="my-3 col-12 d-flex justify-content-center">
+                                                    <img src="/images/avatar/${user.avatar}"
+                                                        style="max-height: 250px; display: block;" alt="User avatar">
                                                 </div>
                                                 <ul class="list-group list-group-flush">
-                                                    <li class="list-group-item">ID: ${user.id}</li>
-                                                    <li class="list-group-item">Email: ${user.email}</li>
-                                                    <li class="list-group-item">Full name: ${user.fullName}</li>
-                                                    <li class="list-group-item">Address: ${user.address}</li>
+                                                    <li class="list-group-item text-center">ID: ${user.id}</li>
+                                                    <li class="list-group-item text-center">Email: ${user.email}</li>
+                                                    <li class="list-group-item text-center">Full name: ${user.fullName}
+                                                    </li>
+                                                    <li class="list-group-item text-center">Address: ${user.address}
+                                                    </li>
+                                                    <li class="list-group-item text-center">Address: ${user.role.name}
+                                                    </li>
                                                 </ul>
                                             </div>
                                             <a href="/admin/user" class="btn btn-success mt-3">Back</a>
