@@ -33,11 +33,11 @@
                     <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid px-4">
-                                <h1 class="mt-4">Manager Users</h1>
+                                <h1 class="mt-4">Create Users</h1>
                                 <ol class="breadcrumb mb-4">
                                     <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
                                     <li class="breadcrumb-item"><a href="/admin/user">Table users</a></li>
-                                    <li class="breadcrumb-item active">Users</li>
+                                    <li class="breadcrumb-item active">Create User</li>
                                 </ol>
                                 <div>
                                     <div class="row">
@@ -49,12 +49,23 @@
                                                 <div class="row">
                                                     <div class="mb-3 col-md-6 col-12">
                                                         <label class="form-label">Email:</label>
-                                                        <form:input type="email" class="form-control" path="email" />
+                                                        <c:set var="emailErr">
+                                                            <form:errors path="email" cssClass="invalid-feedback" />
+                                                        </c:set>
+                                                        <form:input type="email"
+                                                            class="form-control ${not empty emailErr?'is-invalid':''}"
+                                                            path="email" />
+                                                        ${emailErr}
                                                     </div>
                                                     <div class="mb-3 col-md-6 v">
                                                         <label class="form-label">Password:</label>
-                                                        <form:input type="password" class="form-control"
+                                                        <c:set var="passwordErr">
+                                                            <form:errors path="password" cssClass="invalid-feedback" />
+                                                        </c:set>
+                                                        <form:input type="password"
+                                                            class="form-control ${not empty passwordErr?'is-invalid':''}"
                                                             path="password" />
+                                                        ${passwordErr}
                                                     </div>
                                                     <div class="mb-3  col-md-6 col-12">
                                                         <label class="form-label col-md-6">Phone number:</label>
@@ -62,8 +73,15 @@
                                                     </div>
                                                     <div class="mb-3 col-md-6 col-12">
                                                         <label class="form-label">Full name:</label>
-                                                        <form:input type="text" class="form-control" path="fullName" />
+                                                        <c:set var="fullNameErr">
+                                                            <form:errors path="fullName" cssClass="invalid-feedback" />
+                                                        </c:set>
+                                                        <form:input type="text"
+                                                            class="form-control ${not empty fullNameErr?'is-invalid':''}"
+                                                            path="fullName" />
+                                                        ${fullNameErr}
                                                     </div>
+
                                                     <div class="mb-3">
                                                         <label class="form-label">Address:</label>
                                                         <form:input type="text" class="form-control" path="address" />
@@ -79,7 +97,7 @@
                                                         <label for="avatarFile" class="form-label">Avatar:</label>
                                                         <input class="form-control" type="file" id="avatarFile"
                                                             path="avatar" accept=".png, .jpg, .jpeg"
-                                                            name="hoidanitFile" />
+                                                            name="avatarFile" />
                                                     </div>
                                                     <div class="mb-3 col-12 d-flex justify-content-center">
                                                         <img style="max-height: 250px; display: none;"

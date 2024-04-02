@@ -5,12 +5,16 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
+import vn.hoidanit.laptopshop.domain.Role;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.UploadService;
 import vn.hoidanit.laptopshop.service.UserService;
@@ -49,20 +53,23 @@ public class UserController {
 
     @PostMapping(value = "/admin/user/create")
     public String createUserPage(Model model,
-            @ModelAttribute("newUser") User newUser,
-            @RequestParam("hoidanitFile") MultipartFile file) {
+            @ModelAttribute("newUser") @Valid User newUser, BindingResult newUserBindingResult,
+            @RequestParam("avatarFile") MultipartFile file) {
+        // Validate
+        if (newUserBindingResult.hasErrors()) {
+            return "admin/user/create";
+        }
         String avatar = this.uploadService.handleUploadFile(file, "avatar");
         String hashPassword = this.passwordEncoder.encode(newUser.getPassword());
         newUser.setRole(this.userService.getRoleByName(newUser.getRole().getName()));
         newUser.setAvatar(avatar);
         newUser.setPassword(hashPassword);
-
         // Save
         this.userService.handleSaveUser(newUser);
         return "redirect:/admin/user";
     }
 
-    @RequestMapping("/admin/user") // GET
+    @GetMapping("/admin/user") // GET
     public String getUserPage(Model model) {
         List<User> users = this.userService.getAllUser();
         model.addAttribute("users", users);
@@ -84,12 +91,20 @@ public class UserController {
     }
 
     @PostMapping("/admin/user/update")
-    public String postUpdateUser(Model model, @ModelAttribute("updateUser") User updateUser) {
+    public String postUpdateUser(Model model, @ModelAttribute("updateUser") @Valid User updateUser,
+            BindingResult updateUserBindingResult, @RequestParam("avatarFile") MultipartFile file) {
+
+        if (updateUserBindingResult.hasFieldErrors("fullName")) {
+            return "/admin/user/update";
+        }
         User currentUser = this.userService.getUserById(updateUser.getId());
         if (currentUser != null) {
+            currentUser.setAvatar(this.uploadService.handleUploadFile(file, "avatar"));
+            currentUser.setRole(this.userService.getRoleByName(updateUser.getRole().getName()));
             currentUser.setAddress(updateUser.getAddress());
             currentUser.setFullName(updateUser.getFullName());
             currentUser.setPhone(updateUser.getPhone());
+
             this.userService.handleSaveUser(currentUser);
         }
         return "redirect:/admin/user/" + updateUser.getId();
