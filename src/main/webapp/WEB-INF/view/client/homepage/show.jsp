@@ -70,16 +70,11 @@
                     </div>
                 </div>
                 <!-- Modal Search End -->
-
-
                 <!-- Hero Start -->
                 <jsp:include page="../layout/banner.jsp" />
                 <!-- Hero End -->
-                <!-- Featurs Section Start -->
-                <jsp:include page="../layout/feature.jsp" />
-                <!-- Featurs Section End -->
                 <!-- Fruits Shop Start-->
-                <div class="container-fluid fruite py-5">
+                <div class="container-fluid fruite py-2">
                     <div class="container py-5">
                         <div class="tab-class text-center">
                             <div class="row g-4">
@@ -155,25 +150,30 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Fruits Shop End-->
-                            <!-- Footer Start -->
-                            <jsp:include page="../layout/footer.jsp" />
-                            <!-- Footer End -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Fruits Shop End-->
+                <!-- Featurs Section Start -->
+                <jsp:include page="../layout/feature.jsp" />
+                <!-- Featurs Section End -->
+                <!-- Footer Start -->
+                <jsp:include page="../layout/footer.jsp" />
+                <!-- Footer End -->
 
-                            <!-- Back to Top -->
-                            <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
-                                    class="fa fa-arrow-up"></i></a>
-                            <!-- JavaScript Libraries -->
-                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-                            <script
-                                src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-                            <script src="/client/lib/easing/easing.min.js"></script>
-                            <script src="/client/lib/waypoints/waypoints.min.js"></script>
-                            <script src="/client/lib/lightbox/js/lightbox.min.js"></script>
-                            <script src="/client/lib/owlcarousel/owl.carousel.min.js"></script>
+                <!-- Back to Top -->
+                <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
+                        class="fa fa-arrow-up"></i></a>
+                <!-- JavaScript Libraries -->
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="/client/lib/easing/easing.min.js"></script>
+                <script src="/client/lib/waypoints/waypoints.min.js"></script>
+                <script src="/client/lib/lightbox/js/lightbox.min.js"></script>
+                <script src="/client/lib/owlcarousel/owl.carousel.min.js"></script>
 
-                            <!-- Template Javascript -->
-                            <script src="/client/js/main.js"></script>
+                <!-- Template Javascript -->
+                <script src="/client/js/main.js"></script>
             </body>
 
             </html>

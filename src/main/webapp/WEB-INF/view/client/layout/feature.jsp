@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <div class="container-fluid featurs py-5">
-            <div class="container py-5">
+        <div class="container-fluid featurs py-2">
+            <div class="container py-2">
                 <div class="row g-4">
                     <div class="col-md-6 col-lg-3">
                         <div class="featurs-item text-center rounded bg-light p-4">
