@@ -51,6 +51,7 @@ public class ProductController {
         if (newProductBindingResult.hasErrors()) {
             return "/admin/product/create";
         }
+
         String image = this.uploadService.handleUploadFile(file, "product");
         newProduct.setImage(image);
         newProduct.setSoil(newProduct.getQuantity());

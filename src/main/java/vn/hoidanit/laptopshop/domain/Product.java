@@ -40,6 +40,7 @@ public class Product {
     @NotNull
     @Min(value = 1, message = "Số lượng phải bằng hoặc lớn hơn 1")
     private long quantity;
+
     private long soil;
     private String factory;
     private String target;
