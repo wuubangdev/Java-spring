@@ -29,25 +29,47 @@
                                             <div class="card-body">
                                                 <form:form method="post" action="/register"
                                                     modelAttribute="registerUser">
+
+                                                    <c:set var="firstNameErr">
+                                                        <form:errors path="firstName" cssClass="invalid-feedback" />
+                                                    </c:set>
+                                                    <c:set var="lastNameErr">
+                                                        <form:errors path="lastName" cssClass="invalid-feedback" />
+                                                    </c:set>
+                                                    <c:set var="confirmPasswordErr">
+                                                        <form:errors path="confirmPassword"
+                                                            cssClass="invalid-feedback" />
+                                                    </c:set>
+                                                    <c:set var="emailErr">
+                                                        <form:errors path="email" cssClass="invalid-feedback" />
+                                                    </c:set>
+
                                                     <div class="row mb-3">
                                                         <div class="col-md-6">
                                                             <div class="form-floating mb-3 mb-md-0">
-                                                                <form:input class="form-control" type="text"
-                                                                    path="firstName" />
+                                                                <form:input
+                                                                    class="form-control ${not empty firstNameErr?'is-invalid':''}"
+                                                                    type="text" path="firstName" />
+                                                                ${firstNameErr}
                                                                 <label>First name</label>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-floating">
-                                                                <form:input class="form-control" id="lastName"
-                                                                    type="text" path="lastName" />
+                                                                <form:input
+                                                                    class="form-control ${not empty lastNameErr?'is-invalid':''}"
+                                                                    id="lastName" type="text" path="lastName" />
+                                                                ${lastNameErr}
                                                                 <label for="lastName">Last name</label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-floating mb-3">
-                                                        <form:input class="form-control" id="email" type="email"
-                                                            placeholder="name@example.com" path="email" />
+                                                        <form:input
+                                                            class="form-control ${not empty emailErr?'is-invalid':''}"
+                                                            id="email" type="email" placeholder="name@example.com"
+                                                            path="email" />
+                                                        ${emailErr}
                                                         <label for="email">Email address</label>
                                                     </div>
                                                     <div class="row mb-3">
@@ -60,8 +82,11 @@
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-floating mb-3 mb-md-0">
-                                                                <form:input class="form-control" id="confirmPassword"
-                                                                    type="password" path="confirmPassword" />
+                                                                <form:input
+                                                                    class="form-control ${not empty confirmPasswordErr?'is-invalid':''}"
+                                                                    id="confirmPassword" type="password"
+                                                                    path="confirmPassword" />
+                                                                ${confirmPasswordErr}
                                                                 <label for="confirmPassword">Confirm
                                                                     Password
                                                                 </label>
@@ -75,7 +100,8 @@
                                                 </form:form>
                                             </div>
                                             <div class="card-footer text-center py-3">
-                                                <div class="small"><a href="login.html">Have an account? Go to login</a>
+                                                <div class="small"><a href="/login">bạn đã có tải khoản? đến trang
+                                                        đăng nhập</a>
                                                 </div>
                                             </div>
                                         </div>
