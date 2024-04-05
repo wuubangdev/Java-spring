@@ -1,6 +1,8 @@
 package vn.hoidanit.laptopshop.controller.client;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import vn.hoidanit.laptopshop.domain.Cart;
 import vn.hoidanit.laptopshop.domain.CartDetail;
 import vn.hoidanit.laptopshop.domain.Product;
 import vn.hoidanit.laptopshop.domain.User;
+import vn.hoidanit.laptopshop.service.CartDetailService;
 import vn.hoidanit.laptopshop.service.ProductService;
 import vn.hoidanit.laptopshop.service.UserService;
 
@@ -18,16 +21,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class IteamController {
 
     private final ProductService productService;
     private final UserService userService;
+    private final CartDetailService cartDetailService;
 
-    public IteamController(ProductService productService, UserService userService) {
+    public IteamController(ProductService productService, UserService userService,
+            CartDetailService cartDetailService) {
         this.productService = productService;
         this.userService = userService;
+        this.cartDetailService = cartDetailService;
     }
 
     @GetMapping("/product/{id}")
@@ -53,14 +60,27 @@ public class IteamController {
         long id = (long) session.getAttribute("id");
         currentUser.setId(id);
         Cart cart = this.productService.fetchByUser(currentUser);
-        List<CartDetail> cartDetails = cart.getCartDetail();
+        List<CartDetail> cartDetails = new ArrayList<CartDetail>();
         double totalPrice = 0;
-        for (CartDetail cd : cartDetails) {
-            totalPrice += cd.getQuantity() * cd.getPrice();
+        if (cart != null) {
+            cartDetails = cart.getCartDetail();
+            for (CartDetail cd : cartDetails) {
+                totalPrice += cd.getQuantity() * cd.getPrice();
+            }
         }
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
         return "client/cart/show";
+    }
+
+    @PostMapping("/delete-cart-product/{id}")
+    public String deleteCartDetail(@PathVariable long id, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Optional<CartDetail> cartDetail = this.cartDetailService.fetchById(id);
+        if (cartDetail.isPresent()) {
+            this.productService.handleRemoveCartDetail(cartDetail.get(), session);
+        }
+        return "redirect:/cart";
     }
 
 }
