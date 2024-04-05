@@ -34,6 +34,9 @@
             </head>
 
             <body>
+                <!-- Navbar start -->
+                <jsp:include page="../layout/header.jsp" />
+                <!-- Navbar End -->
 
                 <!-- Spinner Start -->
                 <div id="spinner"
@@ -158,9 +161,7 @@
                 </div>
                 </div>
                 <!-- Single Product End -->
-                <!-- Navbar start -->
-                <jsp:include page="../layout/header.jsp" />
-                <!-- Navbar End -->
+
 
 
                 <!-- Modal Search Start -->
