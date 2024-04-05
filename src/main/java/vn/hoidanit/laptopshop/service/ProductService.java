@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import vn.hoidanit.laptopshop.domain.Cart;
 import vn.hoidanit.laptopshop.domain.CartDetail;
@@ -66,7 +67,7 @@ public class ProductService {
             Product product = this.productRepository.findById(productId);
             if (product != null) {
                 Product realProduct = product;
-                CartDetail oldCartDetail = this.cartDetailRepository.findByProduct(realProduct);
+                CartDetail oldCartDetail = this.cartDetailRepository.findByProductAndCart(realProduct, cart);
                 // save cart detail
                 if (oldCartDetail == null) {
                     CartDetail cartDetail = new CartDetail();
@@ -82,12 +83,15 @@ public class ProductService {
                     session.setAttribute("sum", s);
                 } else {
                     oldCartDetail.setQuantity(oldCartDetail.getQuantity() + 1);
-                    oldCartDetail.setPrice(oldCartDetail.getPrice() + realProduct.getPrice());
                     this.cartDetailRepository.save(oldCartDetail);
                 }
 
             }
 
         }
+    }
+
+    public Cart fetchByUser(User user) {
+        return this.cartRepository.findByUser(user);
     }
 }
