@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import vn.hoidanit.laptopshop.domain.Cart;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class IteamController {
@@ -70,6 +72,7 @@ public class IteamController {
         }
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("cart", cart);
         return "client/cart/show";
     }
 
@@ -81,6 +84,44 @@ public class IteamController {
             this.productService.handleRemoveCartDetail(cartDetail.get(), session);
         }
         return "redirect:/cart";
+    }
+
+    @GetMapping("/checkout")
+    public String getCheckOutPage(Model model, HttpServletRequest request) {
+        User currentUser = new User();
+        HttpSession session = request.getSession();
+        long id = (long) session.getAttribute("id");
+        currentUser.setId(id);
+        Cart cart = this.productService.fetchByUser(currentUser);
+        List<CartDetail> cartDetails = new ArrayList<CartDetail>();
+        double totalPrice = 0;
+        if (cart != null) {
+            cartDetails = cart.getCartDetail();
+            for (CartDetail cd : cartDetails) {
+                totalPrice += cd.getQuantity() * cd.getPrice();
+            }
+        }
+        model.addAttribute("cartDetails", cartDetails);
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("cart", cart);
+        return "client/cart/checkout";
+    }
+
+    @PostMapping("/confirm-checkout")
+    public String confimCheckOut(@ModelAttribute("cart") Cart cart) {
+        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetail();
+        this.productService.handleUpdateCartBeforeCheckOut(cartDetails);
+        return "redirect:/checkout";
+    }
+
+    @PostMapping("/place-order")
+    public String handlePlaceOrder(HttpServletRequest request,
+            @RequestParam("receiverName") String receiverName,
+            @RequestParam("receiverAddress") String receiverAddress,
+            @RequestParam("receiverPhone") String receiverPhone) {
+        HttpSession session = request.getSession();
+
+        return "redirect:/";
     }
 
 }

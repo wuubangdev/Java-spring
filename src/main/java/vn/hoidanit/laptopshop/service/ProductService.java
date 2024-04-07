@@ -1,6 +1,7 @@
 package vn.hoidanit.laptopshop.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -113,5 +114,16 @@ public class ProductService {
             }
         }
 
+    }
+
+    public void handleUpdateCartBeforeCheckOut(List<CartDetail> cartDetails) {
+        for (CartDetail cartDetail : cartDetails) {
+            Optional<CartDetail> cdOptional = this.cartDetailRepository.findById(cartDetail.getId());
+            if (cdOptional.isPresent()) {
+                CartDetail currCartDetail = cdOptional.get();
+                currCartDetail.setQuantity(cartDetail.getQuantity());
+                this.cartDetailRepository.save(currCartDetail);
+            }
+        }
     }
 }
