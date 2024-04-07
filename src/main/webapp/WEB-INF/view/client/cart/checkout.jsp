@@ -174,6 +174,7 @@
                                                     <p class="mb-0 pe-4" data-cart-total-price="${totalPrice}">
                                                         <fmt:formatNumber type="number" value="${totalPrice}" /> đ
                                                     </p>
+                                                    <input type="number" name="totalPrice" value="${totalPrice}" />
                                                 </div>
 
                                                 <button

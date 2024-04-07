@@ -118,10 +118,20 @@ public class IteamController {
     public String handlePlaceOrder(HttpServletRequest request,
             @RequestParam("receiverName") String receiverName,
             @RequestParam("receiverAddress") String receiverAddress,
-            @RequestParam("receiverPhone") String receiverPhone) {
+            @RequestParam("receiverPhone") String receiverPhone,
+            @RequestParam("totalPrice") double totalPrice) {
         HttpSession session = request.getSession();
+        User currentUser = new User();
+        long id = (long) session.getAttribute("id");
+        currentUser.setId(id);
+        this.productService.handlePlaceOrder(currentUser, session, receiverName, receiverAddress, receiverPhone,
+                totalPrice);
+        return "redirect:/thanks";
+    }
 
-        return "redirect:/";
+    @GetMapping("/thanks")
+    public String getThanksPage(Model model) {
+        return "client/cart/thanks";
     }
 
 }
