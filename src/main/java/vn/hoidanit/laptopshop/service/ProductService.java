@@ -148,6 +148,7 @@ public class ProductService {
         order.setReceiverAddress(receiverAddress);
         order.setReceiverPhone(receiverPhone);
         order.setTotalPrice(totalPrice);
+        order.setStatus("PENDING");
         order = this.orderRepository.save(order);
         // Create order detail
 

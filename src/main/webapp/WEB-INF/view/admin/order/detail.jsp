@@ -10,7 +10,7 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
                 <meta name="description" content="Hỏi Dân IT - Dự án laptopshop" />
                 <meta name="author" content="Hỏi Dân IT" />
-                <title>Orders</title>
+                <title>Orders Details</title>
                 <link href="/css/styles.css" rel="stylesheet" />
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
             </head>
@@ -22,46 +22,49 @@
                     <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid px-4">
-                                <h1 class="mt-4">Manager Orders</h1>
+                                <h1 class="mt-4">Manager Orders Details</h1>
                                 <ol class="breadcrumb mb-4">
                                     <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                    <li class="breadcrumb-item active">Orders</li>
+                                    <li class="breadcrumb-item"><a href="/admin/order">Order</a></li>
+                                    <li class="breadcrumb-item active">Order Details</li>
                                 </ol>
-                                <div>
-                                    <table class="table table-bordered table-hover mt-2">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mt-2">
                                         <thead>
                                             <tr>
-                                                <th scope="col">ID</th>
+                                                <th scope="col">Sản phẩm</th>
+                                                <th scope="col">Tên sản phẩm</th>
+                                                <th scope="col">Số lượng</th>
                                                 <th scope="col">Tổng tiền</th>
-                                                <th scope="col">Người nhận</th>
-                                                <th scope="col">Địa chỉ nhận</th>
-                                                <th scope="col">Số điện thoại</th>
-                                                <th scope="col">Trạng thái đơn hàng</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach var="order" items="${orders}">
+                                            <c:forEach var="orderDetail" items="${orderDetails}">
                                                 <tr>
-                                                    <th scope="row">${order.id}</th>
-                                                    <td>
-                                                        <fmt:formatNumber type="number" value="${order.totalPrice}" /> đ
+                                                    <th scope="row">
+                                                        <div class="d-flex align-items-center">
+                                                            <img src="/images/product/${orderDetail.product.image}"
+                                                                class="img-fluid me-5 rounded-circle"
+                                                                style="width: 80px; height: 80px;" alt="">
+                                                        </div>
+                                                    </th>
+                                                    <td class="align-middle"><a
+                                                            href="/product/${orderDetail.product.id}"
+                                                            class="text-decoration-none "
+                                                            target="_blank">${orderDetail.product.name}</a>
                                                     </td>
-                                                    <td>${order.receiverName}</td>
-                                                    <td>${order.receiverAddress}</td>
-                                                    <td>${order.receiverPhone}</td>
-                                                    <td>${order.status}</td>
-                                                    <td>
-                                                        <a type="submit" href="/admin/order/${order.id}"
-                                                            class="btn btn-primary">View</a>
-                                                        <a type="submit" href="/admin/order/update/${order.id}"
-                                                            class="btn btn-warning">Update</a>
-                                                        <a type="submit" href="/admin/order/delete/${order.id}"
-                                                            class="btn btn-danger">Delete</a>
+                                                    <td class="align-middle">${orderDetail.quantity}</td>
+                                                    <td class="align-middle">
+                                                        <fmt:formatNumber type="number"
+                                                            value="${orderDetail.price* orderDetail.quantity}" /> đ
                                                     </td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
                                     </table>
+                                    <div class="d-flex justify-content-between">
+                                        <a href="/admin/order" class="btn btn-success mt-3">Back</a>
+                                    </div>
                                 </div>
                             </div>
                         </main>
