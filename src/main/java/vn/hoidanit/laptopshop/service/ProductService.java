@@ -19,6 +19,7 @@ import vn.hoidanit.laptopshop.repository.CartRepository;
 import vn.hoidanit.laptopshop.repository.OrderDetailRepository;
 import vn.hoidanit.laptopshop.repository.OrderRepository;
 import vn.hoidanit.laptopshop.repository.ProductRepository;
+import vn.hoidanit.laptopshop.service.Specification.ProductSpecifications;
 
 @Service
 public class ProductService {
@@ -43,6 +44,18 @@ public class ProductService {
 
     public Product handleSaveProduct(Product product) {
         return this.productRepository.save(product);
+    }
+
+    public Page<Product> getAllProductByFactory(Pageable pageable, String factory) {
+        return this.productRepository.findAll(ProductSpecifications.nameLike(factory), pageable);
+    }
+
+    public Page<Product> getAllProductGreaterThan(Pageable pageable, double minPrice) {
+        return this.productRepository.findAll(ProductSpecifications.priceGreaterThan(minPrice), pageable);
+    }
+
+    public Page<Product> getAllProductLessThan(Pageable pageable, double maxPrice) {
+        return this.productRepository.findAll(ProductSpecifications.priceLessThan(maxPrice), pageable);
     }
 
     public Page<Product> getAllProduct(Pageable pageable) {

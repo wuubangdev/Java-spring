@@ -40,16 +40,34 @@ public class IteamController {
     }
 
     @GetMapping("/products")
-    public String getProductsPage(Model model, @RequestParam("page") Optional<String> pageOptional) {
+    public String getProductsPage(Model model,
+            @RequestParam("page") Optional<String> pageOptional,
+            @RequestParam("factory") Optional<String> factoryOptional,
+            @RequestParam("min-price") Optional<String> minPriceOptional,
+            @RequestParam("max-price") Optional<String> maxPriceOptional) {
         int page = 1;
+        double minPrice = 0;
+        double maxPrice = 0;
         try {
             if (pageOptional.isPresent()) {
                 page = Integer.parseInt(pageOptional.get());
             }
+            if (minPriceOptional.isPresent()) {
+                minPrice = Double.parseDouble(minPriceOptional.get());
+            }
+            if (maxPriceOptional.isPresent()) {
+                maxPrice = Double.parseDouble(maxPriceOptional.get());
+            }
         } catch (Exception e) {
         }
         Pageable pageable = PageRequest.of(page - 1, 6);
-        Page<Product> pageProduct = this.productService.getAllProduct(pageable);
+        String factory = factoryOptional.isPresent() ? factoryOptional.get() : "";
+
+        // Page<Product> pageProduct =
+        // this.productService.getAllProductLessThan(pageable, maxPrice);
+        // Page<Product> pageProduct =
+        // this.productService.getAllProductGreaterThan(pageable, minPrice);
+        Page<Product> pageProduct = this.productService.getAllProductByFactory(pageable, factory);
         List<Product> products = pageProduct.getContent();
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", pageProduct.getTotalPages());
