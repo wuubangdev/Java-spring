@@ -10,17 +10,17 @@
                             Dashboard
                         </a>
 
-                        <a class="nav-link" href="/admin/user?page=1">
+                        <a class="nav-link" href="/admin/user">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             User
                         </a>
 
-                        <a class="nav-link" href="/admin/product?page=1">
+                        <a class="nav-link" href="/admin/product">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Product
                         </a>
 
-                        <a class="nav-link" href="/admin/order?page=1">
+                        <a class="nav-link" href="/admin/order">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Order
                         </a>

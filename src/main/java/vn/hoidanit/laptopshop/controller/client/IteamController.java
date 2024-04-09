@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,21 +25,36 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class IteamController {
 
     private final ProductService productService;
-    private final UserService userService;
     private final CartDetailService cartDetailService;
 
     public IteamController(ProductService productService, UserService userService,
             CartDetailService cartDetailService) {
         this.productService = productService;
-        this.userService = userService;
         this.cartDetailService = cartDetailService;
+    }
+
+    @GetMapping("/products")
+    public String getProductsPage(Model model, @RequestParam("page") Optional<String> pageOptional) {
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+        } catch (Exception e) {
+        }
+        Pageable pageable = PageRequest.of(page - 1, 6);
+        Page<Product> pageProduct = this.productService.getAllProduct(pageable);
+        List<Product> products = pageProduct.getContent();
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", pageProduct.getTotalPages());
+        model.addAttribute("products", products);
+        return "client/product/show";
     }
 
     @GetMapping("/product/{id}")

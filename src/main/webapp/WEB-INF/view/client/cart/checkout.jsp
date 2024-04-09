@@ -181,7 +181,6 @@
                                                     class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4">
                                                     Xác nhận thanh toán
                                                 </button>
-
                                             </div>
                                         </div>
                                     </div>
