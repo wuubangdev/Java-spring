@@ -43,6 +43,7 @@ public class IteamController {
     public String getMethodName(Model model, @PathVariable long id) {
         Product product = this.productService.getProductById(id);
         model.addAttribute("product", product);
+        model.addAttribute("cartDetail", new CartDetail());
         return "client/product/detail";
     }
 
@@ -50,9 +51,21 @@ public class IteamController {
     public String addProductToCart(@PathVariable long id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         long productId = id;
+        long quantity = 1;
         String email = (String) session.getAttribute("email");
-        this.productService.handleAddProductToCart(email, productId, session);
+        this.productService.handleAddProductToCart(email, productId, quantity, session);
         return "redirect:/";
+    }
+
+    @PostMapping("/add-multi-product-to-cart")
+    public String addMultiProductToCart(HttpServletRequest request,
+            @ModelAttribute("cartDetail") CartDetail cartDetail) {
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
+        long productId = cartDetail.getProduct().getId();
+        long quantity = cartDetail.getQuantity();
+        this.productService.handleAddProductToCart(email, productId, quantity, session);
+        return "redirect:/cart";
     }
 
     @GetMapping("/cart")

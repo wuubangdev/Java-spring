@@ -64,6 +64,8 @@
                                                         <form:errors path="detailDesc" cssClass="invalid-feedback" />
                                                     </c:set>
 
+                                                    <input type="hidden" name="${_csrf.parameterName}"
+                                                        value="${_csrf.token}" />
                                                     <div class="mb-3 col-md-6 col-12">
                                                         <label class="form-label">Tên sản phẩm:</label>
 

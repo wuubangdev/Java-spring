@@ -2,6 +2,9 @@ package vn.hoidanit.laptopshop.controller.admin;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,9 +34,13 @@ public class ProductController {
     }
 
     @GetMapping("/admin/product")
-    public String getProductTable(Model model) {
-        List<Product> products = this.productService.getAllProduct();
+    public String getProductTable(Model model, @RequestParam("page") int page) {
+        Pageable pageable = PageRequest.of(page - 1, 3);
+        Page<Product> pageProduct = this.productService.getAllProduct(pageable);
+        List<Product> products = pageProduct.getContent();
         model.addAttribute("products", products);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", pageProduct.getTotalPages());
         return "admin/product/show";
     }
 
@@ -69,7 +76,7 @@ public class ProductController {
     @GetMapping("/admin/product/update/{id}")
     public String getUpdateProductPage(Model model, @PathVariable long id) {
         model.addAttribute("updateProduct", this.productService.getProductById(id));
-        return "/admin/product/update";
+        return "admin/product/update";
     }
 
     @PostMapping("/admin/product/update")
@@ -77,7 +84,7 @@ public class ProductController {
             BindingResult updateProductBindingResult,
             @RequestParam("productFile") MultipartFile file) {
         if (updateProductBindingResult.hasErrors()) {
-            return "/admin/product/update";
+            return "admin/product/update";
         }
         Product currenProduct = this.productService.getProductById(updateProduct.getId());
         if (currenProduct != null) {
@@ -102,7 +109,7 @@ public class ProductController {
     public String getDeleteProductPage(Model model, @PathVariable long id) {
         model.addAttribute("id", id);
         model.addAttribute("deleteProduct", new Product());
-        return "/admin/product/delete";
+        return "admin/product/delete";
     }
 
     @PostMapping("/admin/product/delete")

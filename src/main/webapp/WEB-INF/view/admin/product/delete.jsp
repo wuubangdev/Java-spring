@@ -40,6 +40,8 @@
                                             </div>
                                             <form:form method="post" action="/admin/product/delete"
                                                 modelAttribute="deleteProduct">
+                                                <input type="hidden" name="${_csrf.parameterName}"
+                                                    value="${_csrf.token}" />
                                                 <div class="mb-3 d-none">
                                                     <form:input type="text" path="id" value="${id}" />
                                                 </div>

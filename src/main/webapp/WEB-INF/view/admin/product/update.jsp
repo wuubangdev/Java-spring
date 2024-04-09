@@ -53,6 +53,8 @@
                                             <form:form method="post" action="/admin/product/update"
                                                 modelAttribute="updateProduct" enctype="multipart/form-data">
                                                 <div class="row">
+                                                    <input type="hidden" name="${_csrf.parameterName}"
+                                                        value="${_csrf.token}" />
                                                     <div class="d-none">
                                                         <label class="form-label">ID:</label>
                                                         <form:input type="number" class="form-control" path="id" />
