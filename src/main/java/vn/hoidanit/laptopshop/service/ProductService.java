@@ -46,8 +46,8 @@ public class ProductService {
         return this.productRepository.save(product);
     }
 
-    public Page<Product> getAllProductByFactory(Pageable pageable, String factory) {
-        return this.productRepository.findAll(ProductSpecifications.nameLike(factory), pageable);
+    public Page<Product> getAllProductByFactory(Pageable pageable, List<String> factorys) {
+        return this.productRepository.findAll(ProductSpecifications.factoryEqual(factorys), pageable);
     }
 
     public Page<Product> getAllProductGreaterThan(Pageable pageable, double minPrice) {
@@ -56,6 +56,31 @@ public class ProductService {
 
     public Page<Product> getAllProductLessThan(Pageable pageable, double maxPrice) {
         return this.productRepository.findAll(ProductSpecifications.priceLessThan(maxPrice), pageable);
+    }
+
+    public Page<Product> getAllProductByPrice(Pageable pageable, String price) {
+        if (price.equals("duoi-10tr")) {
+            return this.productRepository.findAll(ProductSpecifications.priceLessThan(10000000), pageable);
+        } else if (price.equals("10tr-den-15tr")) {
+            double min = 10000000;
+            double max = 15000000;
+            return this.productRepository.findAll(ProductSpecifications.matchPrice(min, max), pageable);
+        } else if (price.equals("15tr-den-20tr")) {
+            double min = 15000000;
+            double max = 20000000;
+            return this.productRepository.findAll(ProductSpecifications.matchPrice(min, max), pageable);
+        } else if (price.equals("20tr-den-25tr")) {
+            double min = 20000000;
+            double max = 25000000;
+            return this.productRepository.findAll(ProductSpecifications.matchPrice(min, max), pageable);
+        } else if (price.equals("25tr-den-30tr")) {
+            double min = 25000000;
+            double max = 30000000;
+            return this.productRepository.findAll(ProductSpecifications.matchPrice(min, max), pageable);
+        } else if (price.equals("tren-30tr")) {
+            return this.productRepository.findAll(ProductSpecifications.priceGreaterThan(30000000), pageable);
+        }
+        return this.productRepository.findAll(pageable);
     }
 
     public Page<Product> getAllProduct(Pageable pageable) {

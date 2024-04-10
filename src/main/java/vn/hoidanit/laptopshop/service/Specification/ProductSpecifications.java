@@ -1,5 +1,7 @@
 package vn.hoidanit.laptopshop.service.Specification;
 
+import java.util.List;
+
 import org.springframework.data.jpa.domain.Specification;
 
 import vn.hoidanit.laptopshop.domain.Product;
@@ -12,11 +14,21 @@ public class ProductSpecifications {
     }
 
     public static Specification<Product> priceGreaterThan(double price) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get(Product_.PRICE), price);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.ge(root.get(Product_.PRICE), price);
     }
 
     public static Specification<Product> priceLessThan(double price) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThan(root.get(Product_.PRICE), price);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.le(root.get(Product_.PRICE), price);
+    }
+
+    public static Specification<Product> factoryEqual(List<String> factorys) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.in(root.get(Product_.FACTORY)).value(factorys);
+    }
+
+    public static Specification<Product> matchPrice(double min, double max) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.and(
+                criteriaBuilder.ge(root.get(Product_.PRICE), min),
+                criteriaBuilder.le(root.get(Product_.PRICE), max));
     }
 
 }

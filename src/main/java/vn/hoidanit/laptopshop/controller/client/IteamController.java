@@ -1,6 +1,7 @@
 package vn.hoidanit.laptopshop.controller.client;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
+
 @Controller
 public class IteamController {
 
@@ -44,30 +47,40 @@ public class IteamController {
             @RequestParam("page") Optional<String> pageOptional,
             @RequestParam("factory") Optional<String> factoryOptional,
             @RequestParam("min-price") Optional<String> minPriceOptional,
-            @RequestParam("max-price") Optional<String> maxPriceOptional) {
+            @RequestParam("max-price") Optional<String> maxPriceOptional,
+            @RequestParam("price") Optional<String> priceOptional) {
         int page = 1;
-        double minPrice = 0;
-        double maxPrice = 0;
         try {
             if (pageOptional.isPresent()) {
                 page = Integer.parseInt(pageOptional.get());
             }
-            if (minPriceOptional.isPresent()) {
-                minPrice = Double.parseDouble(minPriceOptional.get());
-            }
-            if (maxPriceOptional.isPresent()) {
-                maxPrice = Double.parseDouble(maxPriceOptional.get());
-            }
         } catch (Exception e) {
         }
         Pageable pageable = PageRequest.of(page - 1, 6);
-        String factory = factoryOptional.isPresent() ? factoryOptional.get() : "";
 
-        // Page<Product> pageProduct =
-        // this.productService.getAllProductLessThan(pageable, maxPrice);
+        // Case 1
+        // double minPrice = minPriceOptional.isPresent() ?
+        // Double.parseDouble(minPriceOptional.get()) : 0;
         // Page<Product> pageProduct =
         // this.productService.getAllProductGreaterThan(pageable, minPrice);
-        Page<Product> pageProduct = this.productService.getAllProductByFactory(pageable, factory);
+
+        // Case 2
+        // double maxPrice = maxPriceOptional.isPresent() ?
+        // Double.parseDouble(maxPriceOptional.get()) : 0;
+        // Page<Product> pageProduct =
+        // this.productService.getAllProductLessThan(pageable, maxPrice);
+
+        // Case 4,5
+        // List<String> factorys = factoryOptional.isPresent() ?
+        // Arrays.asList(factoryOptional.get().split(","))
+        // : new ArrayList<>();
+        // Page<Product> pageProduct =
+        // this.productService.getAllProductByFactory(pageable, factorys);
+
+        // Case 6
+        String price = priceOptional.isPresent() ? priceOptional.get() : "";
+        Page<Product> pageProduct = this.productService.getAllProductByPrice(pageable, price);
+
         List<Product> products = pageProduct.getContent();
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", pageProduct.getTotalPages());
