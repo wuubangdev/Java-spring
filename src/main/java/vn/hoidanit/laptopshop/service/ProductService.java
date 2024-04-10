@@ -47,6 +47,10 @@ public class ProductService {
         return this.productRepository.save(product);
     }
 
+    public Page<Product> getAllProductByName(Pageable pageable, String name) {
+        return this.productRepository.findAll(ProductSpecifications.nameLike(name), pageable);
+    }
+
     public Page<Product> getAllProductByFactory(Pageable pageable, List<String> factorys) {
         if (factorys.size() == 0) {
             return this.productRepository.findAll(pageable);
@@ -216,7 +220,6 @@ public class ProductService {
                 session.setAttribute("sum", 0);
             }
         }
-
     }
 
     public void handleUpdateCartBeforeCheckOut(List<CartDetail> cartDetails) {

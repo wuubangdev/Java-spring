@@ -53,8 +53,8 @@
                             <div class="row">
                                 <!-- Filter -->
                                 <div class="col-12 col-md-3">
-                                    <div class="col-12 mb-3">
-                                        <h6 class="mb-1">Hãng sản xuất</h6>
+                                    <div class="col-12 mb-3" id="factoryFilter">
+                                        <div class="mb-2">Hãng sản xuất</div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
                                                 value="Apple">
@@ -86,8 +86,8 @@
                                             <label class="form-check-label" for="inlineCheckbox3">Acer</label>
                                         </div>
                                     </div>
-                                    <div class="col-8 mb-3">
-                                        <h6 class="mb-1">Mục đích sử dụng</h6>
+                                    <div class="col-8 mb-3" id="targetFilter">
+                                        <div class="mb-2">Mục đích sử dụng</div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
                                                 value="Gaming">
@@ -95,84 +95,84 @@
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
-                                                value="work-study">
+                                                value="Study">
                                             <label class="form-check-label" for="inlineCheckbox2">Sinh viên - Văn
                                                 phòng</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox3"
-                                                value="graph">
+                                                value="Graphic">
                                             <label class="form-check-label" for="inlineCheckbox3">Thiết kế đồ
                                                 họa</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
-                                                value="business">
+                                                value="Business">
                                             <label class="form-check-label" for="inlineCheckbox1">Doanh nhân</label>
                                         </div>
                                     </div>
-                                    <div class="col-8 mb-3">
-                                        <h6 class="mb-1">Mức giá</h6>
+                                    <div class="col-8 mb-3" id="priceFilter">
+                                        <div class="mb-2">Mức giá</div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
-                                                value="less_10">
+                                                value="duoi-10tr">
                                             <label class="form-check-label" for="inlineCheckbox1">Dưới 10 triệu</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
-                                                value="Asus">
+                                                value="10tr-den-15tr">
                                             <label class="form-check-label" for="inlineCheckbox2">Từ 10 = 15
                                                 triệu</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox3"
-                                                value="Lenovo">
+                                                value="15tr-den-20tr">
                                             <label class="form-check-label" for="inlineCheckbox3">Từ 15 - 20
                                                 triệu</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
-                                                value="Dell">
+                                                value="20tr-den-25tr">
                                             <label class="form-check-label" for="inlineCheckbox1">Từ 20 - 25
                                                 triệu</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
-                                                value="MSI">
+                                                value="25tr-den-30tr">
                                             <label class="form-check-label" for="inlineCheckbox2">Từ 25 - 30
                                                 triệu</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox3"
-                                                value="Acer">
+                                                value="tren-30tr">
                                             <label class="form-check-label" for="inlineCheckbox3">Trên 30 triệu</label>
                                         </div>
                                     </div>
-                                    <div class="col-8 mb-3">
-                                        <h6 class="mb-1">Sắp xếp</h6>
+                                    <div class="col-8 mb-3" id="sortFilter">
+                                        <div class="mb-2">Sắp xếp</div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                                id="flexRadioDefault1">
-                                            <label class="form-check-label" for="flexRadioDefault1">
+                                            <input class="form-check-input" type="radio" name="radio-sort"
+                                                id="flexRadioDefault1" value="increment">
+                                            <label class="form-check-label" for="radio-sort">
                                                 Tăng dần
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                                id="flexRadioDefault2" checked>
-                                            <label class="form-check-label" for="flexRadioDefault2">
+                                            <input class="form-check-input" type="radio" name="radio-sort"
+                                                id="flexRadioDefault2" value="decrement">
+                                            <label class="form-check-label" for="radio-sort">
                                                 Giảm dần
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                                id="flexRadioDefault2" checked>
-                                            <label class="form-check-label" for="flexRadioDefault2">
+                                            <input class="form-check-input" type="radio" name="radio-sort"
+                                                id="flexRadioDefault2" value="off" checked>
+                                            <label class="form-check-label" for="radio-sort">
                                                 Không sắp xếp
                                             </label>
                                         </div>
                                     </div>
-                                    <button class="btn border-secondary rounded-pill text-primary mt-2">
+                                    <button class="btn border-secondary rounded-pill text-primary mt-2" id="btnFilter">
                                         Lọc dữ liệu
                                     </button>
                                 </div>

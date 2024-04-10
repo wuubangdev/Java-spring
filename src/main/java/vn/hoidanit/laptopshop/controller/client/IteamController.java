@@ -45,10 +45,11 @@ public class IteamController {
     @GetMapping("/products")
     public String getProductsPage(Model model,
             @RequestParam("page") Optional<String> pageOptional,
+            @RequestParam("name") Optional<String> nameOptional,
             @RequestParam("factory") Optional<String> factoryOptional,
-            @RequestParam("min-price") Optional<String> minPriceOptional,
-            @RequestParam("max-price") Optional<String> maxPriceOptional,
-            @RequestParam("price") Optional<String> priceOptional) {
+            @RequestParam("target") Optional<String> targetOptional,
+            @RequestParam("price") Optional<String> priceOptional,
+            @RequestParam("sort") Optional<String> sortOptional) {
         int page = 1;
         try {
             if (pageOptional.isPresent()) {
@@ -58,34 +59,9 @@ public class IteamController {
         }
         Pageable pageable = PageRequest.of(page - 1, 6);
 
-        // Case 1
-        // double minPrice = minPriceOptional.isPresent() ?
-        // Double.parseDouble(minPriceOptional.get()) : 0;
-        // Page<Product> pageProduct =
-        // this.productService.getAllProductGreaterThan(pageable, minPrice);
+        String name = nameOptional.isPresent() ? nameOptional.get() : "";
 
-        // Case 2
-        // double maxPrice = maxPriceOptional.isPresent() ?
-        // Double.parseDouble(maxPriceOptional.get()) : 0;
-        // Page<Product> pageProduct =
-        // this.productService.getAllProductLessThan(pageable, maxPrice);
-
-        // Case 3,4
-        // List<String> factorys = factoryOptional.isPresent() ?
-        // Arrays.asList(factoryOptional.get().split(","))
-        // : new ArrayList<>();
-        // Page<Product> pageProduct =
-        // this.productService.getAllProductByFactory(pageable, factorys);
-
-        // Case 5
-        // String price = priceOptional.isPresent() ? priceOptional.get() : "";
-        // Page<Product> pageProduct =
-        // this.productService.getAllProductByPrice(pageable, price);
-
-        // Case 6
-        List<String> prices = priceOptional.isPresent() ? Arrays.asList(priceOptional.get().split(","))
-                : new ArrayList<>();
-        Page<Product> pageProduct = this.productService.getAllProductByMultiPrice(pageable, prices);
+        Page<Product> pageProduct = this.productService.getAllProductByName(pageable, name);
 
         List<Product> products = pageProduct.getContent();
         model.addAttribute("currentPage", page);

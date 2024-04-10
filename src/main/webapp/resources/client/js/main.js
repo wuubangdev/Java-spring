@@ -233,6 +233,44 @@
         formatted = formatted.replace(/\./g, ',');
         return formatted;
     }
+    //handle filter product
+    $('#btnFilter').click(function (e) {
+        e.preventDefault();
+        let factoryArr = [];
+        let targetArr = [];
+        let priceArr = [];
+        //factory filer
+        $("#factoryFilter .form-check-input:checked").each(function () {
+            factoryArr.push($(this).val());
+        });
+        //target filer
+        $("#targetFilter .form-check-input:checked").each(function () {
+            targetArr.push($(this).val());
+        });
+        //price filer
+        $("#priceFilter .form-check-input:checked").each(function () {
+            priceArr.push($(this).val());
+        });
+        //sort order
+        let sortValue = $('input[name="radio-sort"]:checked').val();
+        const currentUrl = new URL(window.location.href);
+        const searchParams = currentUrl.searchParams;
+        //add or update query parameters
+        searchParams.set('page', '1');
+        searchParams.set('sort', sortValue);
+
+        if (factoryArr.length > 0) {
+            searchParams.set('factory', factoryArr.join(','));
+        }
+        if (targetArr.length > 0) {
+            searchParams.set('target', targetArr.join(','));
+        }
+        if (priceArr.length > 0) {
+            searchParams.set('price', priceArr.join(','));
+        }
+        //? Bug?
+        window.location.href = currentUrl.toString();
+    });
 
 })(jQuery);
 
