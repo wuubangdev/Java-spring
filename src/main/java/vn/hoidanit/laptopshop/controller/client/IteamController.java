@@ -70,16 +70,22 @@ public class IteamController {
         // Page<Product> pageProduct =
         // this.productService.getAllProductLessThan(pageable, maxPrice);
 
-        // Case 4,5
+        // Case 3,4
         // List<String> factorys = factoryOptional.isPresent() ?
         // Arrays.asList(factoryOptional.get().split(","))
         // : new ArrayList<>();
         // Page<Product> pageProduct =
         // this.productService.getAllProductByFactory(pageable, factorys);
 
+        // Case 5
+        // String price = priceOptional.isPresent() ? priceOptional.get() : "";
+        // Page<Product> pageProduct =
+        // this.productService.getAllProductByPrice(pageable, price);
+
         // Case 6
-        String price = priceOptional.isPresent() ? priceOptional.get() : "";
-        Page<Product> pageProduct = this.productService.getAllProductByPrice(pageable, price);
+        List<String> prices = priceOptional.isPresent() ? Arrays.asList(priceOptional.get().split(","))
+                : new ArrayList<>();
+        Page<Product> pageProduct = this.productService.getAllProductByMultiPrice(pageable, prices);
 
         List<Product> products = pageProduct.getContent();
         model.addAttribute("currentPage", page);

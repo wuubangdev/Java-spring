@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
@@ -47,6 +48,9 @@ public class ProductService {
     }
 
     public Page<Product> getAllProductByFactory(Pageable pageable, List<String> factorys) {
+        if (factorys.size() == 0) {
+            return this.productRepository.findAll(pageable);
+        }
         return this.productRepository.findAll(ProductSpecifications.factoryEqual(factorys), pageable);
     }
 
@@ -81,6 +85,57 @@ public class ProductService {
             return this.productRepository.findAll(ProductSpecifications.priceGreaterThan(30000000), pageable);
         }
         return this.productRepository.findAll(pageable);
+    }
+
+    public Page<Product> getAllProductByMultiPrice(Pageable pageable, List<String> prices) {
+        Specification<Product> combinedSpec = (root, query, criteriaBuilder) -> criteriaBuilder.disjunction();
+        int count = 0;
+        for (String p : prices) {
+            double min = 0;
+            double max = 0;
+            switch (p) {
+                case "duoi-10tr":
+                    min = 1;
+                    max = 10000000;
+                    count++;
+                    break;
+                case "10tr-den-15tr":
+                    min = 10000000;
+                    max = 15000000;
+                    count++;
+                    break;
+                case "15tr-den-20tr":
+                    min = 15000000;
+                    max = 20000000;
+                    count++;
+                    break;
+                case "20tr-den-25tr":
+                    min = 20000000;
+                    max = 25000000;
+                    count++;
+                    break;
+                case "25tr-den-30tr":
+                    min = 25000000;
+                    max = 30000000;
+                    count++;
+                    break;
+                case "tren-30tr":
+                    min = 30000000;
+                    max = 900000000;
+                    count++;
+                    break;
+                default:
+                    break;
+            }
+            if (min != 0 && max != 0) {
+                Specification<Product> rangeSpec = ProductSpecifications.matchMultiPrice(min, max);
+                combinedSpec = combinedSpec.or(rangeSpec);
+            }
+        }
+        if (count == 0) {
+            return this.productRepository.findAll(pageable);
+        }
+        return this.productRepository.findAll(combinedSpec, pageable);
     }
 
     public Page<Product> getAllProduct(Pageable pageable) {
