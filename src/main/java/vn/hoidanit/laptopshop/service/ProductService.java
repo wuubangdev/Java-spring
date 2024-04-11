@@ -15,6 +15,7 @@ import vn.hoidanit.laptopshop.domain.Order;
 import vn.hoidanit.laptopshop.domain.OrderDetail;
 import vn.hoidanit.laptopshop.domain.Product;
 import vn.hoidanit.laptopshop.domain.User;
+import vn.hoidanit.laptopshop.domain.dto.ProductCriteriaDTO;
 import vn.hoidanit.laptopshop.repository.CartDetailRepository;
 import vn.hoidanit.laptopshop.repository.CartRepository;
 import vn.hoidanit.laptopshop.repository.OrderDetailRepository;
@@ -47,6 +48,30 @@ public class ProductService {
         return this.productRepository.save(product);
     }
 
+    public Page<Product> fetchProductWithSpec(Pageable pageable, ProductCriteriaDTO productCriteriaDTO) {
+        if (productCriteriaDTO.getFactory() == null
+                && productCriteriaDTO.getFactory() == null
+                && productCriteriaDTO.getPrice() == null) {
+            return this.productRepository.findAll(pageable);
+        }
+        Specification<Product> combinedSpec = Specification.where(null);
+        if (productCriteriaDTO.getFactory() != null && productCriteriaDTO.getFactory().isPresent()) {
+            Specification<Product> currentSpecs = ProductSpecifications
+                    .matchListFactory(productCriteriaDTO.getFactory().get());
+            combinedSpec = combinedSpec.and(currentSpecs);
+        }
+        if (productCriteriaDTO.getTarget() != null && productCriteriaDTO.getTarget().isPresent()) {
+            Specification<Product> currentSpecs = ProductSpecifications
+                    .matchListTarget(productCriteriaDTO.getTarget().get());
+            combinedSpec = combinedSpec.and(currentSpecs);
+        }
+        if (productCriteriaDTO.getPrice() != null && productCriteriaDTO.getPrice().isPresent()) {
+            Specification<Product> currentSpecs = this.builtPriceSpecification(productCriteriaDTO.getPrice().get());
+            combinedSpec = combinedSpec.and(currentSpecs);
+        }
+        return this.productRepository.findAll(combinedSpec, pageable);
+    }
+
     public Page<Product> getAllProductByName(Pageable pageable, String name) {
         return this.productRepository.findAll(ProductSpecifications.nameLike(name), pageable);
     }
@@ -55,7 +80,7 @@ public class ProductService {
         if (factorys.size() == 0) {
             return this.productRepository.findAll(pageable);
         }
-        return this.productRepository.findAll(ProductSpecifications.factoryEqual(factorys), pageable);
+        return this.productRepository.findAll(ProductSpecifications.matchListFactory(factorys), pageable);
     }
 
     public Page<Product> getAllProductGreaterThan(Pageable pageable, double minPrice) {
@@ -91,9 +116,10 @@ public class ProductService {
         return this.productRepository.findAll(pageable);
     }
 
-    public Page<Product> getAllProductByMultiPrice(Pageable pageable, List<String> prices) {
-        Specification<Product> combinedSpec = (root, query, criteriaBuilder) -> criteriaBuilder.disjunction();
-        int count = 0;
+    public Specification<Product> builtPriceSpecification(List<String> prices) {
+        // Specification<Product> combinedSpec = (root, query, criteriaBuilder) ->
+        // criteriaBuilder.disjunction();
+        Specification<Product> combinedSpec = Specification.where(null);
         for (String p : prices) {
             double min = 0;
             double max = 0;
@@ -101,32 +127,26 @@ public class ProductService {
                 case "duoi-10tr":
                     min = 1;
                     max = 10000000;
-                    count++;
                     break;
                 case "10tr-den-15tr":
                     min = 10000000;
                     max = 15000000;
-                    count++;
                     break;
                 case "15tr-den-20tr":
                     min = 15000000;
                     max = 20000000;
-                    count++;
                     break;
                 case "20tr-den-25tr":
                     min = 20000000;
                     max = 25000000;
-                    count++;
                     break;
                 case "25tr-den-30tr":
                     min = 25000000;
                     max = 30000000;
-                    count++;
                     break;
                 case "tren-30tr":
                     min = 30000000;
                     max = 900000000;
-                    count++;
                     break;
                 default:
                     break;
@@ -136,13 +156,10 @@ public class ProductService {
                 combinedSpec = combinedSpec.or(rangeSpec);
             }
         }
-        if (count == 0) {
-            return this.productRepository.findAll(pageable);
-        }
-        return this.productRepository.findAll(combinedSpec, pageable);
+        return combinedSpec;
     }
 
-    public Page<Product> getAllProduct(Pageable pageable) {
+    public Page<Product> fetchProducts(Pageable pageable) {
         return this.productRepository.findAll(pageable);
     }
 
